@@ -19,8 +19,9 @@ export async function saveUploadedImage(file: File): Promise<string> {
   const filename = `${randomUUID()}.${ext}`;
 
   // On Vercel the filesystem is read-only and ephemeral, so uploads go to Vercel Blob
-  // storage there instead. Locally (no token configured) they still save to public/uploads.
-  if (process.env.BLOB_READ_WRITE_TOKEN) {
+  // storage there instead (authenticated via OIDC, no static token needed). Locally,
+  // they still save to public/uploads.
+  if (process.env.VERCEL) {
     const blob = await put(filename, file, { access: "public" });
     return blob.url;
   }
