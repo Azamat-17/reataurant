@@ -113,13 +113,7 @@
     "submitRegister": "Катталуу",
     "haveAccount": "Аккаунтуңуз барбы?",
     "noAccount": "Аккаунтуңуз жокпу?",
-    "error": "Email/телефон же сырсөз туура эмес",
-    "codeSent": "Ырастоо коду {email} дарегине жөнөтүлдү",
-    "verificationCode": "Ырастоо коду",
-    "verifyCode": "Ырастоо",
-    "invalidCode": "Код туура эмес же мөөнөтү өтүп кеткен",
-    "resendCode": "Кодду кайра жөнөтүү",
-    "codeResent": "Код кайра жөнөтүлдү"
+    "error": "Email/телефон же сырсөз туура эмес"
   },
   "owner": {
     "dashboardTitle": "Менин ресторандарым",

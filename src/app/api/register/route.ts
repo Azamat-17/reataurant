@@ -2,9 +2,6 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { registerSchema } from "@/lib/validations/auth";
-import { generateVerificationCode, sendVerificationEmail } from "@/lib/mailer";
-
-const CODE_TTL_MS = 15 * 60 * 1000;
 
 export async function POST(request: Request) {
   const body = await request.json();
@@ -32,10 +29,10 @@ export async function POST(request: Request) {
 
     const passwordHash = await bcrypt.hash(data.password, 10);
     const user = await prisma.user.create({
-      data: { name: data.name, email, phone, passwordHash, role: "USER", emailVerified: true },
+      data: { name: data.name, email, phone, passwordHash, role: "USER" },
     });
 
-    return NextResponse.json({ id: user.id, phone: user.phone, role: user.role, needsVerification: false });
+    return NextResponse.json({ id: user.id, phone: user.phone, role: user.role });
   }
 
   // role === "OWNER"
@@ -51,21 +48,9 @@ export async function POST(request: Request) {
   }
 
   const passwordHash = await bcrypt.hash(data.password, 10);
-  const code = generateVerificationCode();
   const user = await prisma.user.create({
-    data: {
-      name: data.name,
-      email: data.email,
-      phone,
-      passwordHash,
-      role: "OWNER",
-      emailVerified: false,
-      verificationCode: code,
-      verificationCodeExpiresAt: new Date(Date.now() + CODE_TTL_MS),
-    },
+    data: { name: data.name, email: data.email, phone, passwordHash, role: "OWNER" },
   });
 
-  await sendVerificationEmail(data.email, code);
-
-  return NextResponse.json({ id: user.id, email: user.email, role: user.role, needsVerification: true });
+  return NextResponse.json({ id: user.id, email: user.email, role: user.role });
 }

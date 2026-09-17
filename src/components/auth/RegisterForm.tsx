@@ -21,11 +21,6 @@ export function RegisterForm({
   const t = useTranslations("auth");
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
-  const [pendingVerification, setPendingVerification] = useState<{ email: string; password: string } | null>(null);
-  const [code, setCode] = useState("");
-  const [codeError, setCodeError] = useState<string | null>(null);
-  const [verifying, setVerifying] = useState(false);
-  const [resent, setResent] = useState(false);
 
   const {
     register,
@@ -49,11 +44,6 @@ export function RegisterForm({
       return;
     }
 
-    if (body.needsVerification) {
-      setPendingVerification({ email: data.email as string, password: data.password });
-      return;
-    }
-
     const signInRes = await signIn("credentials", {
       identifier: data.phone || data.email,
       password: data.password,
@@ -65,73 +55,6 @@ export function RegisterForm({
     }
     router.push(redirectTo);
     router.refresh();
-  }
-
-  async function handleVerify(e: React.FormEvent) {
-    e.preventDefault();
-    if (!pendingVerification) return;
-    setCodeError(null);
-    setVerifying(true);
-    const res = await fetch("/api/verify-email", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: pendingVerification.email, code }),
-    });
-    if (!res.ok) {
-      const body = await res.json().catch(() => ({}));
-      setCodeError(body.error ?? t("invalidCode"));
-      setVerifying(false);
-      return;
-    }
-
-    const signInRes = await signIn("credentials", {
-      identifier: pendingVerification.email,
-      password: pendingVerification.password,
-      redirect: false,
-    });
-    setVerifying(false);
-    if (signInRes?.error) {
-      setCodeError(t("error"));
-      return;
-    }
-    router.push(redirectTo);
-    router.refresh();
-  }
-
-  async function handleResend() {
-    if (!pendingVerification) return;
-    setResent(false);
-    await fetch("/api/verify-email", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: pendingVerification.email }),
-    });
-    setResent(true);
-  }
-
-  if (pendingVerification) {
-    return (
-      <form onSubmit={handleVerify} className="flex flex-col gap-3">
-        <p className="text-sm text-muted">{t("codeSent", { email: pendingVerification.email })}</p>
-        <div>
-          <label className="mb-1 block text-xs font-medium text-muted">{t("verificationCode")}</label>
-          <input
-            value={code}
-            onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
-            inputMode="numeric"
-            maxLength={6}
-            className="w-full rounded-lg border border-border px-3 py-2 text-center text-lg tracking-[0.5em]"
-          />
-          {codeError && <p className="mt-1 text-xs text-red-500">{codeError}</p>}
-        </div>
-        <Button type="submit" disabled={verifying || code.length !== 6} className="mt-2">
-          {t("verifyCode")}
-        </Button>
-        <button type="button" onClick={handleResend} className="text-center text-xs font-semibold text-brand">
-          {resent ? t("codeResent") : t("resendCode")}
-        </button>
-      </form>
-    );
   }
 
   return (

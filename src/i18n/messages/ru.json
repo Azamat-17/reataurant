@@ -113,13 +113,7 @@
     "submitRegister": "Зарегистрироваться",
     "haveAccount": "Уже есть аккаунт?",
     "noAccount": "Нет аккаунта?",
-    "error": "Неверный email/телефон или пароль",
-    "codeSent": "Мы отправили код подтверждения на {email}",
-    "verificationCode": "Код подтверждения",
-    "verifyCode": "Подтвердить",
-    "invalidCode": "Неверный или устаревший код",
-    "resendCode": "Отправить код повторно",
-    "codeResent": "Код отправлен повторно"
+    "error": "Неверный email/телефон или пароль"
   },
   "owner": {
     "dashboardTitle": "Мои рестораны",

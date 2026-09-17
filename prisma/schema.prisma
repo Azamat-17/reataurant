@@ -28,10 +28,6 @@ model User {
   role         UserRole @default(USER)
   createdAt    DateTime @default(now())
 
-  emailVerified              Boolean   @default(true)
-  verificationCode           String?
-  verificationCodeExpiresAt  DateTime?
-
   restaurants  Restaurant[]
   favorites    Favorite[]
   reservations ReservationRequest[]

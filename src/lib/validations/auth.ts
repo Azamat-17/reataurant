@@ -34,10 +34,3 @@ export const loginSchema = z.object({
 });
 
 export type LoginInput = z.infer<typeof loginSchema>;
-
-export const verifyCodeSchema = z.object({
-  email: z.string().email(),
-  code: z.string().length(6, "Код состоит из 6 цифр"),
-});
-
-export type VerifyCodeInput = z.infer<typeof verifyCodeSchema>;
