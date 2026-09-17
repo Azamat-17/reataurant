@@ -1,6 +1,7 @@
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
 import { randomUUID } from "crypto";
+import { put } from "@vercel/blob";
 
 const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads");
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -14,12 +15,18 @@ export async function saveUploadedImage(file: File): Promise<string> {
     throw new Error("Файл слишком большой (максимум 5МБ)");
   }
 
-  await mkdir(UPLOAD_DIR, { recursive: true });
-
   const ext = file.type === "image/png" ? "png" : file.type === "image/webp" ? "webp" : "jpg";
   const filename = `${randomUUID()}.${ext}`;
-  const filePath = path.join(UPLOAD_DIR, filename);
 
+  // On Vercel the filesystem is read-only and ephemeral, so uploads go to Vercel Blob
+  // storage there instead. Locally (no token configured) they still save to public/uploads.
+  if (process.env.BLOB_READ_WRITE_TOKEN) {
+    const blob = await put(filename, file, { access: "public" });
+    return blob.url;
+  }
+
+  await mkdir(UPLOAD_DIR, { recursive: true });
+  const filePath = path.join(UPLOAD_DIR, filename);
   const buffer = Buffer.from(await file.arrayBuffer());
   await writeFile(filePath, buffer);
 
