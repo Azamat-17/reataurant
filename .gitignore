@@ -57,3 +57,6 @@ next-env.d.ts
 
 # Claude Code session runtime state (not part of the app)
 /.claude/scheduled_tasks.lock
+
+.vercel
+.env*
