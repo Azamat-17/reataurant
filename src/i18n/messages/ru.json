@@ -44,7 +44,11 @@
     "favorites": "Избранное",
     "myReservations": "Мои брони",
     "moderation": "Модерация ресторанов",
-    "logout": "Выйти"
+    "logout": "Выйти",
+    "navRestaurants": "Рестораны",
+    "navBanquet": "Банкет",
+    "navVenues": "Заведения",
+    "addVenue": "Добавить заведение"
   },
   "breadcrumb": {
     "home": "Главная",
@@ -202,7 +206,15 @@
   },
   "home": {
     "popularTitle": "Популярные заведения",
+    "popularSubtitle": "Места, которые выбирают для отдыха и мероприятий",
+    "viewAll": "Смотреть все",
     "resultsCount": "Найдено заведений: {count}",
-    "noResults": "Ничего не найдено. Попробуйте изменить фильтры."
+    "resultsCountShort": "Найдено {count}",
+    "noResults": "Ничего не найдено. Попробуйте изменить фильтры.",
+    "heroTitle": "Найдите место для особенного вечера",
+    "heroSubtitle": "Рестораны, кафе и банкетные залы Кыргызстана — в одном месте",
+    "searchPlaceholderLong": "Название ресторана, кухня или место",
+    "searchButton": "Найти",
+    "categoriesAll": "Все"
   }
 }

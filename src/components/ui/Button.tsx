@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-type Variant = "primary" | "secondary" | "outline" | "ghost" | "green";
+type Variant = "primary" | "secondary" | "outline" | "ghost" | "green" | "accent";
 type Size = "sm" | "md";
 
 const VARIANT_CLASSES: Record<Variant, string> = {
@@ -9,6 +9,7 @@ const VARIANT_CLASSES: Record<Variant, string> = {
   outline: "border border-border bg-white text-foreground hover:border-foreground",
   ghost: "bg-transparent text-foreground hover:bg-gray-100",
   green: "bg-accent-green text-white hover:bg-accent-green-dark",
+  accent: "bg-accent text-white hover:bg-accent-dark",
 };
 
 const SIZE_CLASSES: Record<Size, string> = {

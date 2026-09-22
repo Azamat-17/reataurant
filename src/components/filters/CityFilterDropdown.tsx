@@ -16,7 +16,7 @@ export function CityFilterDropdown({ cities }: { cities: { slug: string; name: s
       trigger={({ open }) => (
         <span
           className={`flex h-10 items-center gap-1.5 rounded-full border px-4 text-sm font-medium ${
-            activeCity ? "border-brand bg-brand/10 text-brand" : "border-border bg-white/70 text-foreground hover:border-foreground hover:bg-white"
+            activeCity ? "border-accent bg-accent/10 text-accent-dark" : "border-border bg-surface/70 text-foreground hover:border-foreground hover:bg-surface"
           }`}
         >
           <MapPinIcon className="h-4 w-4" />
@@ -33,7 +33,7 @@ export function CityFilterDropdown({ cities }: { cities: { slug: string; name: s
               setParams({ city: null });
               close();
             }}
-            className={`rounded-lg px-2 py-1.5 text-left hover:bg-gray-100 ${!activeSlug ? "font-semibold text-brand" : ""}`}
+            className={`rounded-lg px-2 py-1.5 text-left hover:bg-gray-100 ${!activeSlug ? "font-semibold text-accent-dark" : ""}`}
           >
             {t("allCities")}
           </button>
@@ -46,7 +46,7 @@ export function CityFilterDropdown({ cities }: { cities: { slug: string; name: s
                 close();
               }}
               className={`rounded-lg px-2 py-1.5 text-left hover:bg-gray-100 ${
-                activeSlug === city.slug ? "font-semibold text-brand" : ""
+                activeSlug === city.slug ? "font-semibold text-accent-dark" : ""
               }`}
             >
               {city.name}

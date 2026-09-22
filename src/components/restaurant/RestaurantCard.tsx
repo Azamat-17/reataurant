@@ -22,9 +22,14 @@ export function RestaurantCard({ restaurant }: { restaurant: RestaurantCardData 
     }`;
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-2xl border border-border bg-white transition-shadow hover:shadow-lg">
+    <div className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-surface shadow-sm transition-shadow duration-200 hover:shadow-[0_12px_32px_rgba(23,23,23,0.1)]">
       <Link href={`/restaurants/${restaurant.slug}`} className="relative block aspect-[4/3] w-full overflow-hidden">
-        <Image src={restaurant.coverImage || DEFAULT_COVER_IMAGE} alt={restaurant.name} fill className="object-cover" />
+        <Image
+          src={restaurant.coverImage || DEFAULT_COVER_IMAGE}
+          alt={restaurant.name}
+          fill
+          className="object-cover transition-transform duration-[250ms] ease-out group-hover:scale-[1.04]"
+        />
         <div className="absolute left-2.5 top-2.5 flex flex-wrap gap-1.5">
           <span className="rounded-md bg-black/60 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-white backdrop-blur-sm">
             {restaurant.type}
@@ -59,7 +64,7 @@ export function RestaurantCard({ restaurant }: { restaurant: RestaurantCardData 
           <button
             type="button"
             onClick={() => setReservationOpen(true)}
-            className="w-full rounded-full bg-accent-green px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-accent-green-dark"
+            className="w-full rounded-full bg-accent-green px-4 py-2.5 text-sm font-bold text-white transition-colors duration-200 hover:bg-accent-green-dark"
           >
             {t("bookTable")}
           </button>

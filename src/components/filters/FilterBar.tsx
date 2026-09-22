@@ -17,9 +17,11 @@ interface RegionData {
 export function FilterBar({
   cities,
   regions,
+  hideViewSwitcher = false,
 }: {
   cities: { slug: string; name: string }[];
   regions: RegionData[];
+  hideViewSwitcher?: boolean;
 }) {
   const t = useTranslations("filters");
 
@@ -31,9 +33,11 @@ export function FilterBar({
       <DistrictFilterDropdown regions={regions} />
       <ToggleFilterButton paramKey="onlineBooking" label={t("onlineBooking")} />
       <ToggleFilterButton paramKey="discounts" label={t("discounts")} />
-      <div className="ml-auto shrink-0 pl-2">
-        <ViewSwitcher />
-      </div>
+      {!hideViewSwitcher && (
+        <div className="ml-auto shrink-0 pl-2">
+          <ViewSwitcher />
+        </div>
+      )}
     </div>
   );
 }

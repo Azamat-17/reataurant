@@ -27,7 +27,7 @@ export function DistrictFilterDropdown({ regions }: { regions: RegionData[] }) {
       trigger={({ open }) => (
         <span
           className={`flex h-10 items-center gap-1.5 rounded-full border px-4 text-sm font-medium ${
-            isActive ? "border-brand bg-brand/10 text-brand" : "border-border bg-white/70 text-foreground hover:border-foreground hover:bg-white"
+            isActive ? "border-accent bg-accent/10 text-accent-dark" : "border-border bg-surface/70 text-foreground hover:border-foreground hover:bg-surface"
           }`}
         >
           <MapPinIcon className="h-4 w-4" />
@@ -45,7 +45,7 @@ export function DistrictFilterDropdown({ regions }: { regions: RegionData[] }) {
               setParams({ region: null, district: null });
               close();
             }}
-            className={`rounded-lg px-2 py-1.5 text-left hover:bg-gray-100 ${!isActive ? "font-semibold text-brand" : ""}`}
+            className={`rounded-lg px-2 py-1.5 text-left hover:bg-gray-100 ${!isActive ? "font-semibold text-accent-dark" : ""}`}
           >
             {t("allDistricts")}
           </button>
@@ -58,7 +58,7 @@ export function DistrictFilterDropdown({ regions }: { regions: RegionData[] }) {
                   close();
                 }}
                 className={`block w-full rounded-lg px-2 py-1.5 text-left text-xs font-bold uppercase tracking-wide text-muted hover:bg-gray-100 ${
-                  activeRegionSlug === region.slug && !activeDistrictSlug ? "text-brand" : ""
+                  activeRegionSlug === region.slug && !activeDistrictSlug ? "text-accent-dark" : ""
                 }`}
               >
                 {region.name}
@@ -74,7 +74,7 @@ export function DistrictFilterDropdown({ regions }: { regions: RegionData[] }) {
                         close();
                       }}
                       className={`rounded-lg px-2 py-1.5 text-left hover:bg-gray-100 ${
-                        activeDistrictSlug === district.slug ? "font-semibold text-brand" : ""
+                        activeDistrictSlug === district.slug ? "font-semibold text-accent-dark" : ""
                       }`}
                     >
                       {district.name}

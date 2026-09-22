@@ -43,7 +43,7 @@ export function AllFiltersDrawer({
       >
         {t("all")}
         {activeCount > 0 && (
-          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-brand text-[11px] font-bold">
+          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[11px] font-bold">
             {activeCount}
           </span>
         )}

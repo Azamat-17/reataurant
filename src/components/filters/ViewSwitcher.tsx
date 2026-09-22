@@ -10,12 +10,12 @@ export function ViewSwitcher() {
   const view = searchParams.get("view") === "map" ? "map" : "list";
 
   return (
-    <div className="flex h-10 shrink-0 items-center overflow-hidden rounded-full border border-border bg-white/70">
+    <div className="flex h-10 shrink-0 items-center gap-0.5 rounded-full border border-border bg-background p-1">
       <button
         type="button"
         onClick={() => setParams({ view: null })}
-        className={`flex h-full items-center gap-1.5 px-3.5 text-sm font-medium ${
-          view === "list" ? "bg-gray-200 text-foreground" : "text-muted"
+        className={`flex h-full items-center gap-1.5 rounded-full px-3.5 text-sm font-medium transition-all duration-200 ${
+          view === "list" ? "bg-surface text-foreground shadow-sm" : "text-muted hover:text-foreground"
         }`}
       >
         <ListIcon className="h-4 w-4" />
@@ -24,8 +24,8 @@ export function ViewSwitcher() {
       <button
         type="button"
         onClick={() => setParams({ view: "map" })}
-        className={`flex h-full items-center gap-1.5 px-3.5 text-sm font-medium ${
-          view === "map" ? "bg-gray-200 text-foreground" : "text-muted"
+        className={`flex h-full items-center gap-1.5 rounded-full px-3.5 text-sm font-medium transition-all duration-200 ${
+          view === "map" ? "bg-surface text-foreground shadow-sm" : "text-muted hover:text-foreground"
         }`}
       >
         <MapIcon className="h-4 w-4" />

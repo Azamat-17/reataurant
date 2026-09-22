@@ -44,7 +44,11 @@
     "favorites": "Тандалмалар",
     "myReservations": "Менин брондорум",
     "moderation": "Ресторандарды текшерүү",
-    "logout": "Чыгуу"
+    "logout": "Чыгуу",
+    "navRestaurants": "Ресторандар",
+    "navBanquet": "Банкет",
+    "navVenues": "Мекемелер",
+    "addVenue": "Мекени кошуу"
   },
   "breadcrumb": {
     "home": "Башкы бет",
@@ -202,7 +206,15 @@
   },
   "home": {
     "popularTitle": "Популярдуу мекемелер",
+    "popularSubtitle": "Эс алуу жана иш-чаралар үчүн тандалган жерлер",
+    "viewAll": "Баарын көрүү",
     "resultsCount": "Табылган мекемелер: {count}",
-    "noResults": "Эч нерсе табылган жок. Чыпкаларды өзгөртүп көрүңүз."
+    "resultsCountShort": "Табылды: {count}",
+    "noResults": "Эч нерсе табылган жок. Чыпкаларды өзгөртүп көрүңүз.",
+    "heroTitle": "Өзгөчө кечи үчүн жай табыңыз",
+    "heroSubtitle": "Кыргызстандын ресторандары, кафелери жана банкет заалдары — бир жерде",
+    "searchPlaceholderLong": "Ресторандын аты, ашкана же жай",
+    "searchButton": "Издөө",
+    "categoriesAll": "Баары"
   }
 }
