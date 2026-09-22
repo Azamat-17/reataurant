@@ -17,6 +17,8 @@ export interface RestaurantCardData {
   coverImage?: string | null;
   priceIcons?: string | null;
   city?: { name: string } | null;
+  district?: { name: string } | null;
+  region?: { name: string } | null;
 }
 
 export interface PriceIcon {

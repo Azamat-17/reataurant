@@ -76,8 +76,9 @@
   },
   "card": {
     "bookTable": "Оставить заявку",
-    "capacityLabel": "Вместимость: {capacity} человек",
-    "pricePerPerson": "{price} сом на человека",
+    "bookTableOnline": "Забронировать",
+    "capacityLabel": "До {capacity} гостей",
+    "pricePerPerson": "от {price} сом / человека",
     "share": "Поделиться",
     "linkCopied": "Ссылка скопирована!"
   },

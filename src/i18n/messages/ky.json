@@ -76,8 +76,9 @@
   },
   "card": {
     "bookTable": "Өтүнмө калтыруу",
-    "capacityLabel": "Сыйымдуулугу: {capacity} киши",
-    "pricePerPerson": "{price} сом бир кишиге",
+    "bookTableOnline": "Брондоо",
+    "capacityLabel": "{capacity} конокко чейин",
+    "pricePerPerson": "{price} сомдон / киши башы",
     "share": "Бөлүшүү",
     "linkCopied": "Шилтеме көчүрүлдү!"
   },
