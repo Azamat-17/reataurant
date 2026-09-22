@@ -1,19 +1,7 @@
-"use client";
+import { getTranslations } from "next-intl/server";
 
-import { useState } from "react";
-import { useTranslations } from "next-intl";
-import { useRouter } from "@/i18n/navigation";
-import { SearchIcon } from "@/components/ui/icons";
-
-export function HomeHero() {
-  const t = useTranslations("home");
-  const router = useRouter();
-  const [q, setQ] = useState("");
-
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    router.push(q ? `/restaurants?q=${encodeURIComponent(q)}` : "/restaurants");
-  }
+export async function HomeHero() {
+  const t = await getTranslations("home");
 
   return (
     <section className="relative overflow-hidden">
@@ -32,28 +20,6 @@ export function HomeHero() {
           </h1>
           <p className="max-w-xl text-base text-muted sm:text-lg">{t("heroSubtitle")}</p>
         </div>
-
-        <form
-          onSubmit={handleSubmit}
-          className="flex w-full max-w-2xl flex-col gap-2.5 rounded-2xl bg-surface p-2.5 shadow-[0_8px_30px_rgba(23,23,23,0.08)] sm:flex-row sm:gap-2"
-        >
-          <div className="relative flex h-[60px] flex-1 items-center">
-            <SearchIcon className="pointer-events-none absolute left-4 h-5 w-5 text-muted" />
-            <input
-              value={q}
-              onChange={(e) => setQ(e.target.value)}
-              type="text"
-              placeholder={t("searchPlaceholderLong")}
-              className="h-full w-full rounded-xl bg-transparent pl-12 pr-4 text-base text-foreground outline-none placeholder:text-muted"
-            />
-          </div>
-          <button
-            type="submit"
-            className="h-[60px] shrink-0 rounded-xl bg-accent px-8 text-base font-semibold text-white transition-colors duration-200 hover:bg-accent-dark"
-          >
-            {t("searchButton")}
-          </button>
-        </form>
       </div>
     </section>
   );

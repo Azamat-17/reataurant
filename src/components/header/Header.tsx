@@ -2,17 +2,14 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { SearchBar } from "./SearchBar";
 import { OwnerCta } from "./OwnerCta";
-import { AddVenueButton } from "./AddVenueButton";
 import { UserMenu } from "./UserMenu";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { HeartIcon, CoinIcon } from "@/components/ui/icons";
 
 export function Header() {
-  const t = useTranslations("header");
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -39,24 +36,11 @@ export function Header() {
             </span>
           </Link>
 
-          <nav className="hidden shrink-0 items-center gap-6 xl:flex">
-            <Link href="/restaurants" className="text-sm font-semibold text-foreground/80 transition-colors hover:text-foreground">
-              {t("navRestaurants")}
-            </Link>
-            <Link href="/restaurants" className="text-sm font-semibold text-foreground/80 transition-colors hover:text-foreground">
-              {t("navBanquet")}
-            </Link>
-            <Link href="/restaurants" className="text-sm font-semibold text-foreground/80 transition-colors hover:text-foreground">
-              {t("navVenues")}
-            </Link>
-          </nav>
-
           <div className="hidden flex-1 lg:flex">
             <SearchBar />
           </div>
 
           <div className="ml-auto flex shrink-0 items-center gap-1.5 lg:gap-2.5">
-            <AddVenueButton />
             <span className="hidden h-10 items-center gap-1.5 rounded-full border border-border px-3 text-sm font-semibold text-foreground lg:flex">
               <CoinIcon className="h-4 w-4 text-accent" />0
             </span>
