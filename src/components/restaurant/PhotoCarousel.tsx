@@ -18,6 +18,8 @@ export function PhotoCarousel({ images: rawImages, alt, badges }: Props) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const images = rawImages.length > 0 ? rawImages : [DEFAULT_COVER_IMAGE];
   const hasMultiple = rawImages.length > 1;
+  const sideImages = images.slice(1, 5);
+  const extraCount = images.length - 5;
 
   function prev() {
     setIndex((i) => (i - 1 + images.length) % images.length);
@@ -25,6 +27,11 @@ export function PhotoCarousel({ images: rawImages, alt, badges }: Props) {
 
   function next() {
     setIndex((i) => (i + 1) % images.length);
+  }
+
+  function openAt(i: number) {
+    setIndex(i);
+    setLightboxOpen(true);
   }
 
   useEffect(() => {
@@ -45,14 +52,15 @@ export function PhotoCarousel({ images: rawImages, alt, badges }: Props) {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="relative aspect-[16/7] w-full overflow-hidden rounded-2xl bg-dark-surface">
+      {/* Mobile carousel */}
+      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-dark-surface md:hidden">
         <button
           type="button"
-          onClick={() => setLightboxOpen(true)}
+          onClick={() => openAt(index)}
           className="absolute inset-0 h-full w-full cursor-zoom-in"
           aria-label="Открыть фото на весь экран"
         >
-          <Image src={images[index]} alt={alt} fill className="object-contain" priority={index === 0} />
+          <Image src={images[index]} alt={alt} fill className="object-cover" priority={index === 0} />
         </button>
 
         {badges && <div className="pointer-events-none absolute left-3 top-3 flex flex-wrap gap-1.5">{badges}</div>}
@@ -82,30 +90,125 @@ export function PhotoCarousel({ images: rawImages, alt, badges }: Props) {
         )}
       </div>
 
-      {hasMultiple && (
-        <div className="flex gap-2 overflow-x-auto pb-1">
-          {images.map((src, i) => (
+      {/* Desktop gallery grid: 1 large photo + up to 4 side photos */}
+      <div className="hidden md:grid md:h-[440px] md:grid-cols-4 md:grid-rows-2 md:gap-2">
+        <button
+          type="button"
+          onClick={() => openAt(0)}
+          className={`group relative overflow-hidden rounded-2xl bg-dark-surface ${
+            sideImages.length === 0 ? "col-span-4 row-span-2" : "col-span-2 row-span-2"
+          }`}
+        >
+          <Image
+            src={images[0]}
+            alt={alt}
+            fill
+            className="object-cover transition-transform duration-200 group-hover:scale-[1.02]"
+            priority
+          />
+          {badges && <div className="pointer-events-none absolute left-3 top-3 flex flex-wrap gap-1.5">{badges}</div>}
+        </button>
+
+        {sideImages.length === 1 && (
+          <button
+            type="button"
+            onClick={() => openAt(1)}
+            className="group relative col-span-2 row-span-2 overflow-hidden rounded-2xl bg-dark-surface"
+          >
+            <Image
+              src={sideImages[0]}
+              alt={`${alt} 2`}
+              fill
+              className="object-cover transition-transform duration-200 group-hover:scale-[1.02]"
+            />
+          </button>
+        )}
+
+        {sideImages.length === 2 &&
+          sideImages.map((src, i) => (
             <button
               key={src + i}
               type="button"
-              onClick={() => setIndex(i)}
-              className={`relative h-16 w-24 shrink-0 overflow-hidden rounded-lg ring-2 transition-colors ${
-                i === index ? "ring-brand" : "ring-transparent hover:ring-border"
-              }`}
+              onClick={() => openAt(i + 1)}
+              className="group relative col-span-2 row-span-1 overflow-hidden rounded-2xl bg-dark-surface"
             >
-              <Image src={src} alt={`${alt} ${i + 1}`} fill className="object-cover" />
+              <Image
+                src={src}
+                alt={`${alt} ${i + 2}`}
+                fill
+                className="object-cover transition-transform duration-200 group-hover:scale-[1.02]"
+              />
             </button>
           ))}
-        </div>
-      )}
+
+        {sideImages.length === 3 && (
+          <>
+            <button
+              type="button"
+              onClick={() => openAt(1)}
+              className="group relative col-span-2 row-span-1 overflow-hidden rounded-2xl bg-dark-surface"
+            >
+              <Image
+                src={sideImages[0]}
+                alt={`${alt} 2`}
+                fill
+                className="object-cover transition-transform duration-200 group-hover:scale-[1.02]"
+              />
+            </button>
+            <button
+              type="button"
+              onClick={() => openAt(2)}
+              className="group relative col-span-1 row-span-1 overflow-hidden rounded-2xl bg-dark-surface"
+            >
+              <Image
+                src={sideImages[1]}
+                alt={`${alt} 3`}
+                fill
+                className="object-cover transition-transform duration-200 group-hover:scale-[1.02]"
+              />
+            </button>
+            <button
+              type="button"
+              onClick={() => openAt(3)}
+              className="group relative col-span-1 row-span-1 overflow-hidden rounded-2xl bg-dark-surface"
+            >
+              <Image
+                src={sideImages[2]}
+                alt={`${alt} 4`}
+                fill
+                className="object-cover transition-transform duration-200 group-hover:scale-[1.02]"
+              />
+            </button>
+          </>
+        )}
+
+        {sideImages.length === 4 &&
+          sideImages.map((src, i) => (
+            <button
+              key={src + i}
+              type="button"
+              onClick={() => openAt(i + 1)}
+              className="group relative col-span-1 row-span-1 overflow-hidden rounded-2xl bg-dark-surface"
+            >
+              <Image
+                src={src}
+                alt={`${alt} ${i + 2}`}
+                fill
+                className="object-cover transition-transform duration-200 group-hover:scale-[1.02]"
+              />
+              {i === 3 && extraCount > 0 && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/55 text-lg font-bold text-white">
+                  +{extraCount}
+                </div>
+              )}
+            </button>
+          ))}
+      </div>
 
       {lightboxOpen &&
         typeof document !== "undefined" &&
         createPortal(
-          <div
-            className="fixed inset-0 z-[100] flex flex-col bg-black"
-            onClick={() => setLightboxOpen(false)}
-          >
+          <div className="fixed inset-0 z-[100] flex flex-col bg-black" onClick={() => setLightboxOpen(false)}>
             <div className="flex items-center justify-between px-4 py-3">
               <span className="text-sm font-medium text-white/80">
                 {hasMultiple ? `${index + 1} / ${images.length}` : alt}
