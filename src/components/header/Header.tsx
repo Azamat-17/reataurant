@@ -13,7 +13,7 @@ export function Header() {
         <div className="flex items-center gap-3 lg:gap-4">
           <Link href="/" className="flex shrink-0 items-center gap-2 lg:gap-2.5">
             <Image src="/logo.png" alt="Restaurant" width={44} height={44} className="h-9 w-9 rounded-full lg:h-11 lg:w-11" />
-            <span className="hidden font-display text-4xl leading-none text-gold lg:block">restaurant</span>
+            <span className="hidden font-display text-4xl uppercase leading-none text-gold lg:block">restaurant</span>
           </Link>
 
           <div className="hidden flex-1 lg:flex">
