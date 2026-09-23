@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { reservationSchema } from "@/lib/validations/reservation";
+import { parseRestaurantDateTime, restaurantDayRange } from "@/lib/timezone";
 
 export async function POST(request: Request) {
   const body = await request.json();
@@ -13,11 +14,8 @@ export async function POST(request: Request) {
   const session = await auth();
   const data = parsed.data;
 
-  const preferredAt = new Date(data.preferredAt);
-  const dayStart = new Date(preferredAt);
-  dayStart.setHours(0, 0, 0, 0);
-  const dayEnd = new Date(preferredAt);
-  dayEnd.setHours(23, 59, 59, 999);
+  const preferredAt = parseRestaurantDateTime(data.preferredAt);
+  const { start: dayStart, end: dayEnd } = restaurantDayRange(data.preferredAt.slice(0, 10));
 
   const alreadyBooked = await prisma.reservationRequest.findFirst({
     where: {

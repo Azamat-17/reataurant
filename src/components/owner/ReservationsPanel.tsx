@@ -1,10 +1,13 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { ReservationStatusCell } from "@/components/owner/ReservationStatusCell";
 import { OfflineBookingButton } from "@/components/owner/OfflineBookingButton";
 import { ColumnFilterDropdown } from "@/components/owner/ColumnFilterDropdown";
+import { formatRestaurantDateTime } from "@/lib/timezone";
+
+const POLL_INTERVAL_MS = 15000;
 
 interface ReservationRow {
   id: string;
@@ -56,9 +59,46 @@ function uniqueOptions(values: string[]): { value: string; label: string }[] {
   return Array.from(new Set(values)).map((v) => ({ value: v, label: v }));
 }
 
-export function ReservationsPanel({ reservations, newCount, restaurants }: Props) {
+export function ReservationsPanel({
+  reservations: initialReservations,
+  newCount: initialNewCount,
+  restaurants,
+}: Props) {
   const t = useTranslations("owner");
   const [filters, setFilters] = useState<ColumnFilters>(EMPTY_FILTERS);
+  const [reservations, setReservations] = useState(initialReservations);
+  const [newCount, setNewCount] = useState(initialNewCount);
+
+  // Keep local state in sync whenever the server re-renders this page (e.g. after
+  // router.refresh() from a status change or a new offline booking).
+  useEffect(() => {
+    setReservations(initialReservations);
+    setNewCount(initialNewCount);
+  }, [initialReservations, initialNewCount]);
+
+  // Poll for incoming requests so the admin sees new ones without refreshing the page.
+  useEffect(() => {
+    let cancelled = false;
+
+    async function poll() {
+      if (document.visibilityState !== "visible") return;
+      try {
+        const res = await fetch("/api/owner/reservations", { cache: "no-store" });
+        if (!res.ok || cancelled) return;
+        const data = await res.json();
+        setReservations(data.reservations);
+        setNewCount(data.newCount);
+      } catch {
+        // network hiccup — the next poll tick will retry
+      }
+    }
+
+    const interval = setInterval(poll, POLL_INTERVAL_MS);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
+  }, []);
 
   const hasActiveFilters = Object.values(filters).some((v) => v !== "");
 
@@ -67,7 +107,7 @@ export function ReservationsPanel({ reservations, newCount, restaurants }: Props
   }
 
   const rows = useMemo(
-    () => reservations.map((res) => ({ ...res, dateLabel: new Date(res.preferredAt).toLocaleString("ru-RU") })),
+    () => reservations.map((res) => ({ ...res, dateLabel: formatRestaurantDateTime(res.preferredAt) })),
     [reservations]
   );
 

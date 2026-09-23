@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { reservationSchema } from "@/lib/validations/reservation";
+import { parseRestaurantDateTime } from "@/lib/timezone";
 
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -31,7 +32,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
       guestName: data.guestName,
       guestPhone: data.guestPhone,
       partySize: data.partySize,
-      preferredAt: new Date(data.preferredAt),
+      preferredAt: parseRestaurantDateTime(data.preferredAt),
       comment: data.comment,
       status: "CONFIRMED",
     },

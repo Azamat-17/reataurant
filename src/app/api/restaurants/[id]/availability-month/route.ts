@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { parseRestaurantDateTime, restaurantDayOfMonth } from "@/lib/timezone";
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -19,8 +20,9 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   }
 
   const [year, monthNum] = month.split("-").map(Number);
-  const monthStart = new Date(year, monthNum - 1, 1, 0, 0, 0, 0);
-  const monthEnd = new Date(year, monthNum, 0, 23, 59, 59, 999);
+  const daysInMonth = new Date(Date.UTC(year, monthNum, 0)).getUTCDate();
+  const monthStart = parseRestaurantDateTime(`${month}-01T00:00:00.000`);
+  const monthEnd = parseRestaurantDateTime(`${month}-${String(daysInMonth).padStart(2, "0")}T23:59:59.999`);
 
   const confirmed = await prisma.reservationRequest.findMany({
     where: {
@@ -31,9 +33,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     select: { preferredAt: true },
   });
 
-  const bookedDays = new Set(confirmed.map((r) => r.preferredAt.getDate()));
-
-  const daysInMonth = monthEnd.getDate();
+  const bookedDays = new Set(confirmed.map((r) => restaurantDayOfMonth(r.preferredAt)));
   const days: Record<number, { booked: boolean }> = {};
   for (let day = 1; day <= daysInMonth; day++) {
     days[day] = { booked: bookedDays.has(day) };

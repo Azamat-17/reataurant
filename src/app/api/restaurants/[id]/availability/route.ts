@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { restaurantDayRange } from "@/lib/timezone";
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -18,8 +19,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     return NextResponse.json({ error: "Не найдено" }, { status: 404 });
   }
 
-  const dayStart = new Date(`${date}T00:00:00`);
-  const dayEnd = new Date(`${date}T23:59:59.999`);
+  const { start: dayStart, end: dayEnd } = restaurantDayRange(date);
 
   const confirmedCount = await prisma.reservationRequest.count({
     where: {
